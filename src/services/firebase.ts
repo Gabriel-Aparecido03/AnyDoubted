@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
 import { GoogleAuthProvider,getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -15,4 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const provider = new GoogleAuthProvider()
 const auth = getAuth()
-export { provider,auth}
+const database = getDatabase()
+
+export { provider,auth,database}
