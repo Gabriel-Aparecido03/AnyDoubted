@@ -1,0 +1,128 @@
+#Room {
+    display: block;
+}
+
+.messages-area {
+    header {
+        padding: 5%;
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        border-bottom: 1px solid #cecece;
+        width: 100vw;
+        .logo-content {
+            width: 50%;
+            margin-top: auto;
+            margin-bottom: auto;
+            img {
+                width: 95%;
+            }
+        }
+
+        .info-rooms-content {
+            display: flex;
+            gap: .5rem;
+        
+            button {
+                height: 5vh;
+                border: none;
+                border-radius: 10%;
+            }
+
+            .clipboard-room {
+                display: flex;
+                padding: .2rem;
+                gap: .2rem;
+                color: #EC255A;
+                font-weight: 600;
+                p,span {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                }
+                background-color: none;
+                
+            }
+
+            .exit-room,.close-room {
+                background-color: #EC255A;
+                p {
+                    color: #fff;
+                    font-weight: 500;
+                    font-size: .80rem;
+                }
+            }
+        }
+    }
+}
+
+.send-questions-content {
+
+    h1 {
+        color: #797979;
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 5%;
+        margin-top: 5%;
+    }
+
+    form {
+        display: block;
+        .form-content {
+            display: grid;
+
+            input {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                height: 15vh;
+                border-radius: 2%;
+                border: 1px solid #c1c1c1;
+                width: 80%;
+                padding: .2rem;
+            }
+        }
+
+        button {
+            background-color: #161853;
+            padding: .5rem;
+            color: #fff;
+            font-weight: 600;
+            
+            margin-left: 10%;
+            margin-right: auto;
+            border-radius: 2%;
+            width: 80%;
+            border: none;
+
+            margin-top: 3%;
+            margin-bottom: 3%;
+        }
+    }
+}
+
+.question-feed {
+    .container-user {
+        border: 1px solid #a1a1a1;
+        border-radius: 2%;
+        width: 80%;
+        padding: 1rem;
+        margin-left: 10%;
+        margin-bottom: 5%;
+        
+        .image-and-name-content {
+            display: flex;
+            p {
+                font-size: 1rem;
+                color: #EC255A;
+                font-weight: 500;
+            }
+
+            img {
+                border-radius: 50%;
+                text-align: end;
+                width: 10%;
+            }
+        }
+    }
+}

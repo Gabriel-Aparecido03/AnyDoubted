@@ -1,9 +1,10 @@
 import React from 'react';
-import { Route,Routes,BrowserRouter } from 'react-router-dom'
+import { Route,Routes,BrowserRouter,useParams } from 'react-router-dom'
+
+import { UserContextProvider } from './context/userContext'
 
 import { Home } from './pages/home'
 import { Room } from './pages/room'
-import { CreateRoom } from './pages/createRoom'
 import { AdminRoom } from './pages/adminRoom'
 
 import './styles/global.scss'
@@ -11,12 +12,13 @@ import './styles/global.scss'
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home/>} />
-        <Route path='/new/room' element={<CreateRoom/>} />
-        <Route path='/room/:id' element={<Room/>} />
-        <Route path='/admin/room/:id' element={<AdminRoom/>} />
-      </Routes>
+      <UserContextProvider>
+        <Routes>
+          <Route path='/' element={<Home/>} />
+          <Route path='/room/:id' element={<Room/>} />
+          <Route path='/admin/room/:id' element={<AdminRoom/>} />
+        </Routes>
+      </UserContextProvider>
     </BrowserRouter>
   );
 }

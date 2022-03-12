@@ -3,20 +3,19 @@ import '../styles/pages/Home.scss'
 import {auth,provider,database} from '../services/firebase'
 import { GoogleAuthProvider,signInWithPopup } from 'firebase/auth'
 import logo from '../assets/images/logo.png'
-import background from '../assets/images/background-home.svg'
+import background from '../assets/images/background-home.jpg'
 import {useNavigate} from 'react-router-dom'
 import {get,child,ref,set} from 'firebase/database'
+import { useUser } from '../hook/useUser'
 
 export function Home() {
     const [openFieldJoinRoom,setopenFieldJoinRoom] = useState<any>()
     const [openFieldCreateRoom,setOenFieldCreateRoom] = useState<any>()
     const [displayJoin,setDisplayJoin] = useState<any>('none')
-    const [user,setUser] = useState<any>()
     const [room,setRoom] = useState<any>()
     const [roomId,setRoomId] = useState<any>()
 
-
-   
+    const {user,handleGoogleSignIn} = useUser()
     const navigate = useNavigate()
 
     const handleRoomId = (e:any)=>{
@@ -24,61 +23,22 @@ export function Home() {
     }
 
     async function handleMakingRoom(){
-        await signInWithPopup(auth,provider).then((result)=>{
-            const {displayName,photoURL,uid} = result.user
-            if(!displayName || !photoURL) {
-                return false
-            }
-            const idRoom = uid[1]+uid[2]+uid[3]+uid[4]+uid[5]+displayName[2]+displayName[0]+displayName[8]
-            setUser({
-                name: displayName,
-                idAdmin: uid
-            })
-            setRoom({
-                idRoom:uid[1]+uid[2]+uid[3]+uid[4]+uid[5]+displayName[2]+displayName[0]+displayName[8],
-                isOpen:true
-            })
-            const refDatabase = ref(database)
-            get(child(refDatabase,`rooms/${idRoom}`)).then((snapshot)=>{
-                if(snapshot.exists()) {
-                    console.log('This is room is alreay exist!')
-                    return false
-                }
-                else {
-                    set(ref(database,'rooms/'+idRoom),{
-                        admin:displayName,
-                        idAdim:uid,
-                        roomCode:idRoom,
-                        isOpen:true
-                    })
-                    navigate(`/admin/room/${idRoom}`)
-                }
-            })
-        })
+        if(!user) {
+            await handleGoogleSignIn()
+        }
+        navigate(`/admin/room/${roomId}`)
     } 
 
     async function handleJoinRoom(e:any) {
-        console.log(roomId)
         e.preventDefault()
-        await signInWithPopup(auth,provider).then((result)=>{
-            const refDatabase = ref(database)
-            const {displayName,photoURL,uid} = result.user
-            if(!displayName || !photoURL) {
-                return false
+        const databaseRef = ref(database)
+        if(!user) {
+            await handleGoogleSignIn()
+        }
+        get(child(databaseRef,`rooms/${roomId}`)).then((snapshot)=>{
+            if(snapshot.exists()) {
+                navigate(`/room/${roomId}`)
             }
-            setUser({
-                name: displayName,
-                userId:uid,
-                isAdmin:false
-            })
-            get(child(refDatabase,`rooms/${roomId}`)).then((snapshot)=>{
-               if(snapshot.exists()) {
-                   navigate(`/room/${roomId}`)
-               }
-               else {
-                   console.log('This room isnt exist or closed')
-               }
-            })
         })
     }
 
@@ -106,7 +66,8 @@ export function Home() {
                         <img src={logo} alt="logo da AnyDoubted." />
                     </div>
                     <div className="intro-text-content">
-                        <h1>Sua sala de perguntas &amp; respostas totalmente gratuita.nafVObGA</h1>
+                        <h1>Sua sala de perguntas &amp; respostas totalmente gratuita.</h1>
+                        <p>Entre ou crie salas usando um conta Google.</p>
                     </div>
                     <div className="buttons-content">
                         <button className='create-button' onClick={handleMakingRoom}><p>Criar uma sala</p></button>
