@@ -197,3 +197,16 @@
         }
     }
 }
+
+@media (min-width:650px) {
+    .messages-area {
+        header {
+            padding: 3%;
+            .logo-content {
+                img {
+                    width: 50%;
+                }
+            }
+        }
+    }
+}

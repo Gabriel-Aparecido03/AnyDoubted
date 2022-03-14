@@ -7,7 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import {useUser} from '../hook/useUser'
 import {database} from '../services/firebase'
 import {onValue, ref, child,set, push, get ,onChildAdded, onChildChanged, update} from 'firebase/database'
-import '../styles/pages/Room.scss'
+import '../styles/pages/RoomAdmin.scss'
 
 export function AdminRoom() {
 
@@ -39,7 +39,9 @@ export function AdminRoom() {
         })
         
         const questionsRef= ref(database,`rooms/${id}/questions`)
-        onChildAdded(questionsRef,(data)=>{setMessages((prevArry:any)=>[...prevArry,data.val()])})
+        onChildAdded(questionsRef,(data)=>{
+            setMessages((prevArry:any)=>[...prevArry,data.val()])
+        })
     },[])
 
     const handleSendMensage = (e:any)=> {
@@ -104,9 +106,25 @@ export function AdminRoom() {
                     <h1>Sala de Perguntas e Respostas</h1>
                     <form onSubmit={handleSendMensage}>
                        <div className="form-content">
-                            <input type="text" placeholder='Coloque sua pergunta aqui' onChange={(e:any)=>{setMessage(e.target.value)}}/>
+                            <textarea className='send-question-area' 
+                            onChange={(e:any)=>{setMessage(e.target.value)}}
+                            placeholder={'Coloque sua pergunta aqui.'}
+                            ></textarea>
                        </div>
-                        <button>Enviar pergunta</button>
+                        <div className="content-button">
+                        <div className="user-content">
+                            <div className="image-content-user">
+                                <img src={user.avatar} 
+                                referrerPolicy='no-referrer'
+                                alt="foto de perfil do administrador da sala." />
+                            </div>
+                            <p>
+                                {user.name}
+                            </p>
+                            
+                        </div>
+                        <button className='send-button'>Enviar pergunta</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -115,11 +133,12 @@ export function AdminRoom() {
                     return (
                         <div className="container-user" key={key}>
                             <div className="image-and-name-content" key={key}>
-                                <p>{value.author.name}</p>
                                 <img referrerPolicy='no-referrer' src={value.author.avatar} alt="imagem do usúario"/>
+                                <p>{value.author.name}</p>
+                                
                             </div>
                             <div className="message-content">
-                                {value.message}    
+                                <p>{value.message} </p>   
                             </div>
                         </div>
                     )

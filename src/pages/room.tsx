@@ -96,10 +96,28 @@ export function Room() {
             <div className="send-questions-content">
                 <div className="user"></div>
                 <div className="form-ask-content">
+                    <h1>Sala de Perguntas e Respostas</h1>
                     <form onSubmit={handleSendMensage}>
-                        <label htmlFor="">Coloque tua pergunta aqui!</label>
-                        <input type="text" onChange={(e:any)=>{setMessage(e.target.value)}}/>
-                        <button>Enviar pergunta</button>
+                       <div className="form-content">
+                            <textarea className='send-question-area' 
+                            onChange={(e:any)=>{setMessage(e.target.value)}}
+                            placeholder={'Coloque sua pergunta aqui.'}
+                            ></textarea>
+                       </div>
+                        <div className="content-button">
+                        <div className="user-content">
+                            <div className="image-content-user">
+                                <img src={user.avatar} 
+                                referrerPolicy='no-referrer'
+                                alt="foto de perfil do administrador da sala." />
+                            </div>
+                            <p>
+                                {user.name}
+                            </p>
+                            
+                        </div>
+                        <button className='send-button'>Enviar pergunta</button>
+                        </div>
                     </form>
                 </div>
             </div>
