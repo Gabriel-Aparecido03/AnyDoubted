@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import {auth} from '../services/firebase'
 import logo from '../assets/images/logo.png'
 import { HiOutlineDuplicate } from 'react-icons/hi'
 import {useUser} from '../hook/useUser'
@@ -15,12 +14,19 @@ export function Room() {
     const navigate = useNavigate()
     const {user} = useUser()
     const [messages,setMessages] = useState<any>([])
-    const [roomCode,setRoomCode] = useState<any>()
     const [message,setMessage] = useState<any>()
+    const [roomName,setRoomName] = useState<any>()
+    const [numOfQuestions,SetNumOfQuestions] = useState(0)
 
     useEffect(()=>{     
 
-        const roomRef = ref(database,`rooms/${id}`)
+        const roomRefName = ref(database,`rooms/${id}/title`)
+
+        onValue(roomRefName,(snapshot)=>{
+            const data = snapshot.val()
+            setRoomName(data)
+        })
+
         const isOpenRef = ref(database,`rooms/${id}/isOpen`)
         onValue(isOpenRef,(snapshot)=>{
             const data = snapshot.val()
@@ -33,8 +39,9 @@ export function Room() {
         if(user) {
                 const idRoomRef =ref(database,`rooms/${id}/idAdim`)
                 const roomRef= ref(database,`rooms/${id}/questions`)
-                onChildAdded(roomRef,(data)=>{setMessages((prevArry:any)=>[...prevArry,data.val()])})
-            get(child(ref(database),`rooms/${id}/idAdim`)).then((result)=>{
+                onChildAdded(roomRef,(data)=>{setMessages((prevArry:any)=>[data.val(),...prevArry])})
+
+                get(child(ref(database),`rooms/${id}/idAdmin`)).then((result)=>{
                 if(result.exists()) {
                     const idAdmin = result.val()
                     if(idAdmin == user.id) {
@@ -46,24 +53,35 @@ export function Room() {
                 }
             })
         }
-
-
     },[])
 
 
     const handleSendMensage = (e:any)=> {
         e.preventDefault()
+        
+        const date = new Date()
+        const minutes = date.getMinutes()
+        const hour = date.getHours()
+
+        const postListRef = ref(database, `rooms/${id}/questions`)
+
+        const newPostRef = push(postListRef)
+
+
         const contentMessage = {
             message:message,
+            id: newPostRef.key,
+            time:`${hour}:${minutes}`, 
+            like: {
+                count:0,
+                users:[]
+            },
             author:{
                 name: user.name,
                 avatar: user.avatar,
             }
         }
 
-        const roomRef= ref(database,`rooms/${id}/questions`)
-        const postListRef = ref(database, `rooms/${id}/questions`)
-        const newPostRef = push(postListRef)
         set(newPostRef,contentMessage)
     }
 
@@ -77,26 +95,23 @@ export function Room() {
 
     return(
         <div id="Room">
-            <div className="messages-area">
-                <header>
-                    <div className="logo-content">
-                        <img src={logo} alt="imagem logo" />
-                    </div>
-                    <div className="info-rooms-content">
-                        <button className="clipboard-room" onClick={handleCopyToClipboard}>
-                            <span><HiOutlineDuplicate/></span>
-                            <p>{id}</p>
-                        </button>
-                        <button className="exit-room" onClick={handleExitRoom}>
-                            <p>Sair da sala</p>
-                        </button>
-                    </div>
-                </header>
-            </div>
+            <header>
+                <div className="logo-content">
+                    <img src={logo} alt="imagem logo" />
+                </div>
+                <div className="info-rooms-content">
+                    <button className="clipboard-room" onClick={handleCopyToClipboard}>
+                        <span><HiOutlineDuplicate/></span>
+                        <p>{id}</p>
+                    </button>
+                    <button className="exit-room" onClick={handleExitRoom}>
+                        <p>Sair da sala</p>
+                    </button>
+                </div>
+            </header>
             <div className="send-questions-content">
-                <div className="user"></div>
                 <div className="form-ask-content">
-                    <h1>Sala de Perguntas e Respostas</h1>
+                    <h1>{roomName}</h1>
                     <form onSubmit={handleSendMensage}>
                        <div className="form-content">
                             <textarea className='send-question-area' 
@@ -126,11 +141,16 @@ export function Room() {
                     return (
                         <div className="container-user" key={key}>
                             <div className="image-and-name-content" key={key}>
-                                <p>{value.author.name}</p>
-                                <img referrerPolicy='no-referrer' src={value.author.avatar} alt="imagem do usúario"/>
+                                <div className="user-infos-content">
+                                    <p>{value.author.name}</p>
+                                    <img referrerPolicy='no-referrer' src={value.author.avatar} alt="imagem do usúario"/>
+                                </div>
+                                <div className="time-content">
+                                    {value.time}
+                                </div>
                             </div>
                             <div className="message-content">
-                                {value.message}    
+                                <p>{value.message}</p> 
                             </div>
                         </div>
                     )

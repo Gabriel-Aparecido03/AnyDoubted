@@ -7,8 +7,7 @@ aside {
         width: 100%;
         text-align: center;
         img {
-            padding-top: 15%;
-            width: 100%;
+            width: 70%;
         }
     }
 }
@@ -22,19 +21,21 @@ main {
         .intro-text-content {
             
             h1 {
+                margin-inline: 2rem;
+
                 text-align: center;
                 
-                font-size: 1.75rem;
-                color: #8f8f8f;
+                font-size: 1.55rem;
+                color: #000000;
                 font-weight: 700;
             }
 
             p {
                 text-align: center;
                 margin-top: 5%;
-                font-size: 1rem;
+                font-size: .75rem;
                 color: #8f8f8f;
-                font-weight: 400; 
+                font-weight: 600; 
             }
         }
     
@@ -47,15 +48,16 @@ main {
             gap: 1rem;
 
             .create-button,.join-button {
-                height: 10vh;
-                width: 30%;
-                border-radius: 5%;
+                height: 6vh;
+                width: 40%;
+                border-radius: .8rem;
+                box-shadow: .1rem .1rem .3rem  #888888;
                 border: none;
                 p {
                     font-weight: 700;
                     color: #ffff;
-                    padding: 1rem;
-                    font-size: .95rem;
+                    padding: .65rem;
+                    font-size: .75rem;
                 }
             }
 
@@ -69,34 +71,41 @@ main {
         }
 
         .input-content {
-            display: flex;
             
-            form {
-                display: flex;
-                
-                margin-top: 10%;
+            form {                
+                margin-top: 7%;
                 
                 justify-content: center;
                 text-align: center;
                 gap: .5rem;
-
+                
                 input {
-                    width: 40%;
+                    font-size: .55rem;
+                    
+                    padding: .5rem;
+
+                    width: 60vw;
                     height: 5vh;
-                    border-radius: 5%;
+                    
+                    border-radius: .5rem;
                     border: none;
-                    border: 1px solid black;
+                    border: 1px solid #c1c1c1;
+                    box-shadow: .1rem .1rem .4rem  #cacaca;
+
                 }
 
                 button {
                     border: none;
-                    border-radius: 5%;
+                    border-radius: .8rem;
+                    height: 4vh;
                     padding: .5rem;
+                   
                     background-color: #292c6d;
+                    box-shadow: .1rem .1rem .4rem  #cacaca;
                     p{
                         font-weight: 600;
                         color: #fff;
-                        font-size: .75rem;
+                        font-size: .55rem;
                     }
                 }
             }
@@ -108,8 +117,8 @@ main {
     aside {
         .image-content-aside {
             img {
-                padding-top: 5%;
-                width: 85%;
+                padding-top: 0;
+                width: 65%;
             }
         }
     }
@@ -130,7 +139,10 @@ main {
 
             .input-content {
                 form {
-                    margin-top: 5%;
+                    margin-top: 2%;
+                    input {
+                        margin-top: 1%;
+                    }
                 }
             }
         }
@@ -151,8 +163,14 @@ main {
 
         .main-content {
             .intro-text-content {
+
+                h1 {
+                    font-size: 1.75rem;
+                }
+
                 p {
                     margin-top: 3%;
+                    font-size: 1.25rem;
                 }
             }
 
@@ -161,12 +179,25 @@ main {
                 
                 .create-button,.join-button {
                     height: 7vh;
+
+                    p {
+                        font-size: .95rem;
+                    }
                 }
             }
 
             .input-content {
                 form {
                     margin-top: 5%;
+                    input {
+                        font-size: .95rem;
+                    }
+
+                    button {
+                        p {
+                            font-size: .75rem;
+                        }
+                    }
                 }
             }
         }
@@ -182,15 +213,16 @@ main {
         display: flex;
         justify-content: center;
         text-align: center;
+        width: 100%;
+        float: left;
         .image-content-aside {
-            float: left;
-            width: 60%;
             text-align: end;
             img {
+                padding: 0;
                 text-align:end;
                 margin-top: auto;
                 margin-bottom: auto;
-                width: 100%;
+                width: 80%;
             }
         }
     }
@@ -198,7 +230,7 @@ main {
     main { 
         margin: 0;
         padding: 0;
-        width: 60%;
+        width: 80%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -237,7 +269,8 @@ main {
                 margin-top: 12%;
 
                 .create-button,.join-button {
-                    height: 14vh;
+                    height: 15vh;
+                    width: 50%;
 
                     p {
                         font-size: 1.55rem;
@@ -263,9 +296,9 @@ main {
 
             .input-content {
                 form {
-
                     button {
                         padding: .8rem;
+                        height: 8vh;
                         p {
                             font-size: 1.15rem;
                         }
@@ -279,6 +312,8 @@ main {
 
                     input {
                         font-size: 1.2rem;
+                        width: 100%;
+                        height: 8vh;
                     }
                 }
             }

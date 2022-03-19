@@ -1,19 +1,27 @@
 import React,{useEffect, useState} from 'react'
-import '../styles/pages/Home.scss'
-import {auth,provider,database} from '../services/firebase'
-import { GoogleAuthProvider,signInWithPopup } from 'firebase/auth'
-import logo from '../assets/images/logo.png'
-import background from '../assets/images/background-home.jpg'
-import {useNavigate} from 'react-router-dom'
-import {get,child,ref,set} from 'firebase/database'
 import { useUser } from '../hook/useUser'
 
+import { useNavigate } from 'react-router-dom'
+import logo from '../assets/images/logo.png'
+import background from '../assets/images/background-home.jpg'
+
+import '../styles/pages/Home.scss'
+
+import {auth} from '../services/firebase'
+
+import { get,child,ref,set } from 'firebase/database'
+import { database } from '../services/firebase'
+
+
 export function Home() {
-    const [openFieldJoinRoom,setopenFieldJoinRoom] = useState<any>()
-    const [openFieldCreateRoom,setOenFieldCreateRoom] = useState<any>()
-    const [displayJoin,setDisplayJoin] = useState<any>('none')
-    const [room,setRoom] = useState<any>()
-    const [roomId,setRoomId] = useState<any>()
+    const [displayJoin,setDisplayJoin] = useState<string>('none')
+    const [displayNameRoom,setDisplayNameRoom] = useState<string>('none')
+
+    const [makeIdRoom,setMakeIdRoom] = useState<string>()
+
+    const [roomId,setRoomId] = useState<string>()
+
+    const [nameRoom,setNameRoom] = useState<string>()
 
     const {user,handleGoogleSignIn} = useUser()
     const navigate = useNavigate()
@@ -22,11 +30,34 @@ export function Home() {
         setRoomId(e.target.value)
     }
 
-    async function handleMakingRoom(){
-        if(!user) {
+    const handleNameRoom = (e:any) => {
+        setNameRoom(e.target.value)
+    }
+
+    async function handleMakingRoom(e:any){
+        e.preventDefault()
+
+        if(nameRoom?.trim() === '') {
+            // react toastify 
+            return
+        }
+        if (!user) {
             await handleGoogleSignIn()
         }
-        navigate(`/admin/room/${roomId}`)
+
+        const date = new Date()
+        const seconds = date.getSeconds()
+
+        const idUser = auth.currentUser?.uid
+        const idRoom = `${ idUser?.substring(0,5)}${seconds}`
+
+        set(ref(database,`rooms/${idRoom}`),{
+            name:nameRoom,
+            idAdmin:idUser,
+            idRoom:idRoom
+        })
+
+        navigate(`/admin/room/${idRoom}`)
     } 
 
     async function handleJoinRoom(e:any) {
@@ -39,17 +70,6 @@ export function Home() {
             if(snapshot.exists()) {
                 navigate(`/room/${roomId}`)
             }
-        })
-    }
-
-    const createElement = ()=>{
-        setopenFieldJoinRoom(()=>{
-            return (
-                <form onSubmit={ handleJoinRoom}>
-                    <input type="text" placeholder='Coloque aqui seu código de sala' onChange={handleRoomId}/>
-                    <button><p>Entrar na sala</p></button>
-                </form>
-            )
         })
     }
 
@@ -70,17 +90,27 @@ export function Home() {
                         <p>Entre ou crie salas usando um conta Google.</p>
                     </div>
                     <div className="buttons-content">
-                        <button className='create-button' onClick={handleMakingRoom}><p>Criar uma sala</p></button>
+                        <button className='create-button' onClick={()=>{
+                            setDisplayNameRoom('grid')
+                            setDisplayJoin('none')    
+                            }}
+                        ><p>Criar uma sala</p></button>
                         <button className='join-button'
-                        onClick={()=>{setDisplayJoin('block')}}
-                        
+                        onClick={()=>{
+                            setDisplayJoin('grid')
+                            setDisplayNameRoom('none')
+                        }}
                         ><p>Entrar em uma sala</p></button>
                     </div>
-                    <div className="input-content" style={{display:`${displayJoin}`}}>
-                    <form onSubmit={ handleJoinRoom}>
-                        <input type="text" placeholder='Coloque aqui seu código de sala' onChange={handleRoomId}/>
-                        <button><p>Entrar na sala</p></button>
-                    </form>
+                    <div className="input-content">
+                        <form onSubmit={ handleJoinRoom} style={{display:`${displayJoin}`}}>
+                            <input type="text" placeholder='Coloque aqui seu código de sala' onChange={handleRoomId}/>
+                            <button><p>Entrar na sala</p></button>
+                        </form>
+                        <form onSubmit={handleMakingRoom} style={{display:`${displayNameRoom}`}}>
+                            <input type="text" onChange={handleNameRoom} placeholder='Coloque o nome da sua sala aqui'/>
+                            <button><p>Criar Sala</p></button>
+                        </form>
                     </div>
                 </div>
             </main>
