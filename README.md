@@ -16,10 +16,10 @@
 
 ## Ajustes e melhorias
 O projeto está ainda em fase de desenvolvimento e as próximas atualizações serão voltadas para as seguintes tarefas:
-- [] Colocar outras formas de login.
-- [] Adicionar Like nas mensagens.
-- [] Mais funções ao Admin da sala.
-- [] Admin pode iniciar votações.
+- [ ] Colocar outras formas de login.
+- [ ] Adicionar Like nas mensagens.
+- [ ] Mais funções ao Admin da sala.
+- [ ] Admin pode iniciar votações.
 
 
 ## Tecnologias :computer:
