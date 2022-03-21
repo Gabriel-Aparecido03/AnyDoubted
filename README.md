@@ -1,4 +1,4 @@
-<p>
+<p aling="center">
     <img alt="AnyDoubted" src="./src/assets/images/logo.png">
 </p>
 
@@ -10,7 +10,7 @@
 ## Sobre
 
 <div>
-    <h1>Acesse o site nesse link <a>https://anydoubted.firebaseapp.com/</a></h1>
+    <h3>Acesse o site nesse link <a>https://anydoubted.firebaseapp.com/</a></h3>
     <p>Esse é um projeto com um intuito de construir um sistemas de sala de conversar online.</p>
 </div>
 
